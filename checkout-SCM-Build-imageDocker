@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = 'myapache-image'
+        REPO_URL = 'https://github.com/<Navins40>/projet-Devops.git'
+    }
+
+    stages {
+        stage('Nettoyage Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Cloner le dépôt GitHub') {
+            steps {
+                git "${REPO_URL}"
+            }
+        }
+
+        stage('Construire l’image Docker') {
+            steps {
+                script {
+                    docker.build("${IMAGE_NAME}", '.')
+                }
+            }
+        }
+    }
+}
